@@ -1,4 +1,4 @@
-package in.bitanxen.app.model;
+package in.bitanxen.app.dto.chat;
 
 import lombok.Getter;
 import lombok.Setter;

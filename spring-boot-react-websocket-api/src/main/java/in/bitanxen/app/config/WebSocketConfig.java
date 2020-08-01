@@ -12,12 +12,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/bitanxen").withSockJS();
+        registry
+                .addEndpoint("/bitanxen")
+                .setAllowedOrigins("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic");
-        registry.setApplicationDestinationPrefixes("/app");
+        registry
+                .setApplicationDestinationPrefixes("/app")
+                .enableSimpleBroker("/topic");
     }
 }
