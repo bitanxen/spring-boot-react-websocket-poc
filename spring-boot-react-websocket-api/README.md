@@ -1,1 +1,1 @@
-# spring-boot-react-websocket
+# Chat Application
