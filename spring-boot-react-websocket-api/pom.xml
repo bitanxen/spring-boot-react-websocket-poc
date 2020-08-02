@@ -7,6 +7,7 @@
 		<groupId>in.bitanxen.app</groupId>
 		<artifactId>spring-boot-react-websocket</artifactId>
 		<version>0.0.1</version>
+		<relativePath/>
 	</parent>
 
 	<artifactId>spring-boot-react-websocket-api</artifactId>
