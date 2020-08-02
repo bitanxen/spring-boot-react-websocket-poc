@@ -14,8 +14,10 @@ COPY spring-boot-react-websocket-client/package.json spring-boot-react-websocket
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-RUN ./mvnw dependency:go-offline
 
+RUN chmod 770 mvnw
+
+RUN ./mvnw dependency:go-offline
 RUN ./mvnw clean install -DskipTests
 
 ARG JAR_FILE=/opt/app/spring-boot-react-websocket-api/target/*.jar
