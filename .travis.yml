@@ -3,6 +3,8 @@ jdk:
   - openjdk11
 before_install:
       - chmod +x mvnw
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 script: ./mvnw clean install
 notifications:
   email: bitanxen@gmail.com
