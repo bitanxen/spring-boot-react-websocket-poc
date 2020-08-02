@@ -1,6 +1,5 @@
 package in.bitanxen.app.config.security;
 
-import in.bitanxen.app.model.user.User;
 import in.bitanxen.app.service.AuthenticationService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +12,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.ArrayList;
 

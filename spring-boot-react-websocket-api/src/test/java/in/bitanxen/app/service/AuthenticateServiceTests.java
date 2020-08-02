@@ -5,25 +5,12 @@ import in.bitanxen.app.dto.user.UserDTO;
 import in.bitanxen.app.exception.ApplicationException;
 import in.bitanxen.app.exception.ApplicationRegistrationException;
 import in.bitanxen.app.model.user.User;
-import in.bitanxen.app.repository.user.UserRepository;
-import in.bitanxen.app.util.JwtTokenUtil;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles(value = "test")
