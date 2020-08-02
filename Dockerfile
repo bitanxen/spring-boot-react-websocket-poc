@@ -1,6 +1,5 @@
 
-FROM openjdk:8-jdk-alpine as RUN
-
+FROM maven:3.6.3-jdk-8 as BUILD
 WORKDIR /opt/app
 
 COPY spring-boot-react-websocket-api/pom.xml spring-boot-react-websocket-api/pom.xml
@@ -10,16 +9,15 @@ COPY spring-boot-react-websocket-client/pom.xml spring-boot-react-websocket-clie
 COPY spring-boot-react-websocket-client/src spring-boot-react-websocket-client/src
 COPY spring-boot-react-websocket-client/public spring-boot-react-websocket-client/public
 COPY spring-boot-react-websocket-client/package.json spring-boot-react-websocket-client/package.json
+COPY spring-boot-react-websocket-client/yarn.lock spring-boot-react-websocket-client/yarn.lock
 
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
 
-RUN chmod 770 mvnw
+RUN mvn clean install -DskipTests
 
-RUN ./mvnw dependency:go-offline
-RUN ./mvnw clean install -DskipTests
+FROM openjdk:8-jdk-alpine as RUN
+WORKDIR /opt/app
 
 ARG JAR_FILE=/opt/app/spring-boot-react-websocket-api/target/*.jar
-COPY ${JAR_FILE} application.jar
-ENTRYPOINT ["java","-jar","/application.jar"]
+COPY --from=BUILD ${JAR_FILE} /opt/app/application.jar
+ENTRYPOINT ["java","-jar","/opt/app/application.jar"]

@@ -19,7 +19,7 @@
         <main.basedir>${project.parent.basedir}</main.basedir>
         <node.version>v12.14.0</node.version>
         <yarn.version>v1.22.4</yarn.version>
-        <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
 	</properties>
 
 	<build>
@@ -58,6 +58,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <installDirectory>.</installDirectory>
                     <nodeVersion>${node.version}</nodeVersion>
                     <yarnVersion>${yarn.version}</yarnVersion>
                 </configuration>
