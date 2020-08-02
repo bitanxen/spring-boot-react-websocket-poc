@@ -8,3 +8,7 @@ after_success:
 script: ./mvnw clean install
 notifications:
   email: bitanxen@gmail.com
+branches:
+  only:
+    - master
+    - R_*
