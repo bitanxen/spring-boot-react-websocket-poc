@@ -16,7 +16,7 @@ COPY .mvn .mvn
 COPY pom.xml .
 RUN ./mvnw dependency:go-offline
 
-RUN ./mvnw install -DskipTests
+RUN ./mvnw clean install -DskipTests
 
 ARG JAR_FILE=/opt/app/spring-boot-react-websocket-api/target/*.jar
 COPY ${JAR_FILE} application.jar
