@@ -1,1 +1,1 @@
-web: java -jar spring-boot-react-websocket-api/target/spring-boot-react-websocket-api.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar spring-boot-react-websocket-api/target/spring-boot-react-websocket-api.jar
