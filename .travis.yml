@@ -3,8 +3,19 @@ jdk:
   - openjdk11
 before_install:
       - chmod +x mvnw
+addons:
+  sonarcloud:
+    organization: "bitanxen"
+    token:
+      secure: "px3pRXURbFBc68Mwt3T/Ozc7Gm3vtRfD6ge1axmbb+H2/v/eKSpKHCnvvjizi7gjIgMqZHLHpyxLwfZN6o0d3IsEqV+TwFrJoDl5HDToQds9nutxwENM5q8PxQhPydQLIv1VTPmiWJT/3g4ydzhvRb5mdRmG4iN6Eaay8VNHfna7MVYMctlXM4FO94j/6fgT+18W9hmCvbvkWPUrcxGvBmAmaMUaem6s3iY0ezKHANXRpqF9LrMw0Mw2OryeyZA3lchHCN36BAhkIO33IYhxUVa+AabLKcG/b85DLDMI7WPOI/NxYyMTwDhbMJOSESRUnOn4WYJg+ry9t4XM4d8bcLootlQPilmFXMgSIAyXsgM0G5kFD33d09TuUARi5CraTzalNcX63hs2dEjD96CtUaeCDyLgqCxXXia2wr11b4Ntf3KKOpRbUww2uDbYML5jz2N7XwUP+5qptoZDPX7Br9IOIVLtfiX7l70BhvMRjdOciUv+tc6vzcny+SZt/OwCN6rPgeCV6CuPMVVoJrB4uKRt7PZEFf5Jv8Tn2BSD5yzirGCfwYY1tTAPq2rWqczuhGs6WiTq74h1HmxybIWXxmj6IAtNcs/h0+lS1GS/o325VMQ8h8vsq2+4+bE1RbgbqCOEGW/o5/qQi/sFLXLzbRHQtRZ+76crY+e8PU88kKA="
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-script: ./mvnw clean install
+script:
+  - ./mvnw clean install
+  - sonar-scanner -X -Dsonar.projectVersion=1.0.0
 notifications:
   email: bitanxen@gmail.com
+branches:
+  only:
+    - master
+    - R_*
