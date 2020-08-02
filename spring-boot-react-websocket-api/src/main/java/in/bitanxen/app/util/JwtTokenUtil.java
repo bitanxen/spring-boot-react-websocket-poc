@@ -1,6 +1,5 @@
 package in.bitanxen.app.util;
 
-import in.bitanxen.app.config.security.SessionUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
