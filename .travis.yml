@@ -1,8 +1,8 @@
 language: java
 jdk:
   - openjdk11
+before_script:
+      - chmod +x mvnw
 script: ./mvnw clean install
 notifications:
   email: bitanxen@gmail.com
-before_install:
-  - chmod +x mvnw
