@@ -12,7 +12,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 script:
   - ./mvnw clean install
-  - sonar-scanner -X
+  - sonar-scanner
 notifications:
   email: bitanxen@gmail.com
 branches:
