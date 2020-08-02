@@ -5,6 +5,7 @@ import in.bitanxen.app.model.chat.UserChatRoom;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -17,7 +18,10 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "Application-Generic-Generator",
+            strategy = "in.bitanxen.app.config.ApplicationGenericGenerator"
+    )
+    @GeneratedValue(generator = "Application-Generic-Generator")
     @Column(name = "USER_ID", nullable = false, unique = true)
     private String userId;
 
@@ -35,4 +39,10 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private Set<BookmarkChat> bookmarkChats = new HashSet<>();
+
+    public User(String emailId, String userPassword, String fullName) {
+        this.emailId = emailId;
+        this.userPassword = userPassword;
+        this.fullName = fullName;
+    }
 }

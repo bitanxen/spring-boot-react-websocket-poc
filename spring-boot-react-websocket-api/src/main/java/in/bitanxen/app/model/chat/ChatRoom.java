@@ -30,7 +30,7 @@ public class ChatRoom {
     @Column(name = "ROOM_LOGO")
     private String roomLogo;
 
-    @Column(name = "GROUP")
+    @Column(name = "ISGROUP")
     private boolean group;
 
     @Column(name = "ENABLED")

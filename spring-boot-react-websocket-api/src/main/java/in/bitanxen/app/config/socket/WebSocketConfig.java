@@ -1,4 +1,4 @@
-package in.bitanxen.app.config;
+package in.bitanxen.app.config.socket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
