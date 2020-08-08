@@ -1,43 +1,41 @@
-import React, { useRef, useState } from "react";
-import SockJsClient from "react-stomp";
+import React from "react";
+import Provider from "react-redux/es/components/Provider";
+import { Router } from "react-router-dom";
+import jssExtend from "jss-extend";
+import { create } from "jss";
+import {
+  StylesProvider,
+  jssPreset,
+  createGenerateClassName,
+} from "@material-ui/styles";
 
-function App(props) {
-  const clientRef = useRef(null);
-  const [msg, setMsg] = useState([]);
-  const [text, setText] = useState([]);
-  const [connected, setConnected] = useState(false);
+import store from "./store";
+import AppContext from "./AppContext";
+import history from "@history";
+import routes from "app/configs/RouteConfig";
+import { ApplicationTheme, ApplicationLayout } from "@application";
 
-  const sendMessage = () => {
-    clientRef.current.sendMessage("/topic/public", text);
-  };
+const jss = create({
+  ...jssPreset(),
+  plugins: [...jssPreset().plugins, jssExtend()],
+  insertionPoint: document.getElementById("jss-insertion-point"),
+});
 
+const generateClassName = createGenerateClassName();
+
+function App() {
   return (
-    <div>
-      <SockJsClient
-        url="http://192.168.1.100:8080/bitanxen"
-        topics={["/topic/public"]}
-        onMessage={(m) => {
-          setMsg([...msg, m]);
-        }}
-        ref={clientRef}
-        onConnect={() => setConnected(true)}
-      />
-      {connected ? (
-        <React.Fragment>
-          Your Message:{" "}
-          <input type="text" onChange={(e) => setText(e.target.value)} />
-          <button onClick={sendMessage}>Send</button>
-        </React.Fragment>
-      ) : (
-        <div>Not Connected</div>
-      )}
-
-      <div style={{ width: "100%", textAlign: "center" }}>
-        {msg.map((m, index) => (
-          <div key={index}>{m}</div>
-        ))}
-      </div>
-    </div>
+    <AppContext.Provider value={{ routes: routes }}>
+      <StylesProvider jss={jss} generateClassName={generateClassName}>
+        <Provider store={store}>
+          <Router history={history}>
+            <ApplicationTheme>
+              <ApplicationLayout />
+            </ApplicationTheme>
+          </Router>
+        </Provider>
+      </StylesProvider>
+    </AppContext.Provider>
   );
 }
 
