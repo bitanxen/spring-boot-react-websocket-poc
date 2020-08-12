@@ -9,9 +9,14 @@ const routesConfig = [...ComponentRouteConfig];
 const routes = [
   ...generateRoutesFromConfigs(routesConfig, null),
   {
+    path: "/app/",
+    exact: true,
+    component: () => <Redirect to="/app/chat" />,
+  },
+  {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/home" />,
+    component: () => <Redirect to="/app/chat" />,
   },
   {
     component: () => <Redirect to="/error/404" />,

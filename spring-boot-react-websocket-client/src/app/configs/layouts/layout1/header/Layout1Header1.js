@@ -17,7 +17,7 @@ function Layout1Header(props) {
       <AppBar position="static">
         <Toolbar variant="dense">
           <Typography variant="body1" color="inherit">
-            Chat Application
+            TalkFest
           </Typography>
         </Toolbar>
       </AppBar>

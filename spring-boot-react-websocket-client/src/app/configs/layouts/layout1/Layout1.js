@@ -13,7 +13,7 @@ function ApplicationLayout1(props) {
   return (
     <div id="application" className="w-full max-h-screen ">
       <Layout1Header />
-      <div className="w-full m-2">
+      <div className="w-full">
         {renderRoutes(routes)}
         {props.children}
       </div>

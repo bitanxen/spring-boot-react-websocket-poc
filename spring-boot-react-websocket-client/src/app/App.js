@@ -14,6 +14,8 @@ import AppContext from "./AppContext";
 import history from "@history";
 import routes from "app/configs/RouteConfig";
 import { ApplicationTheme, ApplicationLayout } from "@application";
+import ApplicationAuthentication from "app/components/auth/ApplicationAuthentication";
+import ApplicationAuthorization from "app/components/auth/ApplicationAuthorization";
 
 const jss = create({
   ...jssPreset(),
@@ -29,9 +31,13 @@ function App() {
       <StylesProvider jss={jss} generateClassName={generateClassName}>
         <Provider store={store}>
           <Router history={history}>
-            <ApplicationTheme>
-              <ApplicationLayout />
-            </ApplicationTheme>
+            <ApplicationAuthentication>
+              <ApplicationAuthorization>
+                <ApplicationTheme>
+                  <ApplicationLayout />
+                </ApplicationTheme>
+              </ApplicationAuthorization>
+            </ApplicationAuthentication>
           </Router>
         </Provider>
       </StylesProvider>

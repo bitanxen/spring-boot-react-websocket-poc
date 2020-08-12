@@ -113,6 +113,7 @@ export const defaultThemeOptions = {
   },
   typography: {
     fontFamily: ["Asap", "sans-serif"].join(","),
+    fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 600,
@@ -124,12 +125,12 @@ export const defaultThemeOptions = {
 export const mustHaveThemeOptions = {
   typography: {
     fontFamily: ["Asap", "sans-serif"].join(","),
-    htmlFontSize: 10,
+    fontSize: 14,
     body1: {
-      fontSize: "1.4rem",
+      fontSize: "1.1rem",
     },
     body2: {
-      fontSize: "1.4rem",
+      fontSize: "1.2rem",
     },
   },
 };
