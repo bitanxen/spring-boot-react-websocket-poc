@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @RestController
@@ -40,5 +41,14 @@ public class ChatController {
     public void informClient() {
         Collection<ChatUser> users = ChatUserDB.getInstance().getUsers();
         simpMessagingTemplate.convertAndSend("/topic/public", users);
+    }
+
+    @Scheduled(fixedRate = 3000)
+    public void invalidateSession() {
+        Collection<ChatUser> users = ChatUserDB.getInstance().getUsers();
+        users.parallelStream().filter(u -> u.getHeartbeatTime().isBefore(LocalDateTime.now().minusMinutes(2)))
+                .forEach(chatUser -> {
+                    ChatUserDB.getInstance().setUser(chatUser.getUserId(), false);
+                });
     }
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Menu, MenuItem, IconButton, Typography } from "@material-ui/core";
 import { PersonAdd, GroupAdd, MoreVert } from "@material-ui/icons";
+import clsx from "clsx";
 
 import chatService from "app/service/ChatService";
 import * as Actions from "app/store/actions";
@@ -57,13 +58,18 @@ function Home(props) {
 
   useEffect(() => {
     if (chat.chat.connected) {
-      //dispatch(Actions.subscriberGroup(chat.chat.rooms));
+      dispatch(Actions.subscriberGroup(chat.chat.rooms));
     }
   }, [dispatch, chat.chat.connected, chat.chat.rooms]);
 
   return (
-    <div className="mx-20 mt-10 flex h-512 overflow-auto bg-gray-100 justify-center rounded-t-8">
-      <div className="w-1/3 pr-1">
+    <div className="flex mx-2 h-full overflow-auto justify-center">
+      <div
+        className={clsx(
+          "w-full md:w-1/3 pr-1",
+          chat.chat.currenctRoom === null ? "block" : "hidden md:block"
+        )}
+      >
         <div className="flex flex-grow my-1 justify-between bg-green-200 h-32 pl-5 pr-3 border-green-700 shadow-1">
           <div className="flex justify-center">
             <div className="flex flex-col justify-center mr-3">
@@ -132,7 +138,12 @@ function Home(props) {
           )}
         </div>
       </div>
-      <div className="w-2/3 pl-1 h-512">
+      <div
+        className={clsx(
+          "w-full md:w-2/3 pl-1",
+          chat.chat.currenctRoom === null ? "hidden md:block" : "block"
+        )}
+      >
         <ChatRoom roomId={chat.chat.currenctRoom} />
       </div>
       <AddPerson
