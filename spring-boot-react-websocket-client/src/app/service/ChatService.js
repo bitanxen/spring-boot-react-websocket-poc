@@ -35,8 +35,21 @@ class ChatService {
     }, 5000);
   };
 
-  subscriberToTopices = (onMessageReceived) => {
-    stompClient.subscribe("/topic/pubic", onMessageReceived);
+  subscribeTopics = (roomId, onMessageReceived) => {
+    stompClient.subscribe("/topic/message/" + roomId, onMessageReceived);
+  };
+
+  sendMessage = (text, sender, room) => {
+    stompClient.send(
+      "/app/chat/" + room,
+      {},
+      JSON.stringify({
+        sender: sender,
+        messageType: "CHAT",
+        content: text,
+        chatGroup: room,
+      })
+    );
   };
 }
 
