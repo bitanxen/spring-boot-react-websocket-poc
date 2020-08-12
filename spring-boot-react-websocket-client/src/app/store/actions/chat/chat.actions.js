@@ -52,9 +52,9 @@ export function setUserOnline(value) {
 export function connectUser(userId) {
   return (dispatch) => {
     chatService.connectUser(
-      (f) => {
+      () => {
         chatService.joinChat(userId, (msg) => dispatch(userOnline(msg)));
-        dispatch(onConnect(f));
+        dispatch(onConnect());
       },
       (e) => {
         dispatch(onError(e));
