@@ -39,7 +39,7 @@ function Login(props) {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="min-h-screen flex flex-col justify-center sm:px-6 lg:px-8">
+      <div className="min-h-screen max-h-screen flex flex-col justify-center sm:px-6 lg:px-8">
         <div className="bg-white pt-20 md:rounded-12 sm:mx-auto sm:w-full sm:max-w-xs">
           <div className="mb-20 sm:mx-auto sm:w-full sm:max-w-md">
             <img

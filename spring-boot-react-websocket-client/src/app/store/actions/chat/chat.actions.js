@@ -6,6 +6,7 @@ export const SET_CHAT_ROOMS = "[CHAT] SET CHAT ROOM";
 export const ADD_CHAT_ROOMS = "[CHAT] ADD CHAT ROOM";
 export const CHANGE_CURRENT_CHAT_ROOM = "[CHAT] CHANGE_CURRENT_CHAT_ROOM";
 export const USER_ONLINE = "[CHAT] USER_ONLINE";
+export const STORE_CHAT = "[CHAT] STORE CHAT";
 
 export function setConnectionStatus(value) {
   return {
@@ -84,13 +85,27 @@ function userOnline(msg) {
 }
 
 export function subscriberGroup(rooms) {
-  //console.log(rooms);
-}
-
-/*
-function onMessageReceived(msg) {
   return (dispatch) => {
-    console.log(msg);
+    for (const room of rooms) {
+      chatService.subscribeTopics(room.roomId, (msg) =>
+        dispatch(onMessageReceived(msg))
+      );
+    }
+    return dispatch(() => {});
   };
 }
-*/
+
+function onMessageReceived(msg) {
+  return (dispatch) => {
+    const data = JSON.parse(msg.body);
+    dispatch(storeChat(data));
+  };
+}
+
+function storeChat(data) {
+  data.timeStamp = new Date();
+  return {
+    type: STORE_CHAT,
+    payload: data,
+  };
+}

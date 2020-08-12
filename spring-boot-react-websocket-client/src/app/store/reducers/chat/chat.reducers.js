@@ -6,6 +6,7 @@ const initialState = {
   rooms: null,
   currenctRoom: null,
   onlineUsers: [],
+  chats: [],
 };
 
 const chat = function (state = initialState, action) {
@@ -45,6 +46,12 @@ const chat = function (state = initialState, action) {
       return {
         ...state,
         onlineUsers: [...action.payload],
+      };
+    }
+    case Actions.STORE_CHAT: {
+      return {
+        ...state,
+        chats: [...state.chats, action.payload],
       };
     }
     default:

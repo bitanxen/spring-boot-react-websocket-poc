@@ -11,9 +11,9 @@ function ApplicationLayout1(props) {
   const { routes } = appContext;
 
   return (
-    <div id="application" className="w-full max-h-screen ">
+    <div id="application" className="w-full h-screen flex flex-col">
       <Layout1Header />
-      <div className="w-full">
+      <div className="w-full h-full mb-32">
         {renderRoutes(routes)}
         {props.children}
       </div>
