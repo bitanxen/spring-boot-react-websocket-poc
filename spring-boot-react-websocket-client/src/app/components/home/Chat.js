@@ -63,7 +63,7 @@ function Home(props) {
   }, [dispatch, chat.chat.connected, chat.chat.rooms]);
 
   return (
-    <div className="flex mx-2 h-full overflow-auto justify-center">
+    <div className="flex h-full overflow-auto justify-center md:mx-3">
       <div
         className={clsx(
           "w-full md:w-1/3 pr-1",
@@ -140,7 +140,7 @@ function Home(props) {
       </div>
       <div
         className={clsx(
-          "w-full md:w-2/3 pl-1",
+          "w-full md:w-2/3",
           chat.chat.currenctRoom === null ? "hidden md:block" : "block"
         )}
       >
