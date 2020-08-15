@@ -111,7 +111,7 @@ function storeChat(data) {
   };
 }
 
-function updateLastMessage(roomId, messageId) {
+export function updateLastMessage(roomId, messageId) {
   return {
     type: LAST_SEEN_MESSAGE,
     payload: {
