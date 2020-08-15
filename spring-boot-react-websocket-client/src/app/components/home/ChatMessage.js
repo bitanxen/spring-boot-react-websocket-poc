@@ -6,7 +6,6 @@ import {
   IconButton,
   TextField,
   Avatar,
-  Typography,
 } from "@material-ui/core";
 import { Send, PostAdd } from "@material-ui/icons";
 import clsx from "clsx";
@@ -16,38 +15,13 @@ import chatService from "app/service/ChatService";
 
 const useStyles = makeStyles((theme) => ({
   messageRow: {
+    justifyContent: "flex-end",
     "&.contact": {
-      "& .bubble": {
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.getContrastText(theme.palette.background.paper),
-        borderTopLeftRadius: 5,
-        borderBottomLeftRadius: 5,
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
-        "& .time": {
-          marginLeft: 12,
-        },
-      },
-      "&.first-of-group": {
-        "& .bubble": {
-          borderTopLeftRadius: 20,
-        },
-      },
-      "&.last-of-group": {
-        "& .bubble": {
-          borderBottomLeftRadius: 20,
-        },
-      },
-    },
-    "&.me": {
-      paddingLeft: 40,
-
       "& .avatar": {
         order: 2,
         margin: "0 0 0 16px",
       },
       "& .bubble": {
-        marginLeft: "auto",
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
         borderTopLeftRadius: 20,
@@ -55,37 +29,35 @@ const useStyles = makeStyles((theme) => ({
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
         "& .time": {
+          fontSize: "10px",
           justifyContent: "flex-end",
-          right: 0,
-          marginRight: 12,
         },
       },
-      "&.first-of-group": {
-        "& .bubble": {
-          borderTopRightRadius: 20,
-        },
+    },
+    "&.me": {
+      justifyContent: "flex-start",
+      "& .avatar": {
+        margin: "0 16px 0 0",
       },
-
-      "&.last-of-group": {
-        "& .bubble": {
-          borderBottomRightRadius: 20,
+      "& .bubble": {
+        backgroundColor: theme.palette.secondary.main,
+        color: theme.palette.getContrastText(theme.palette.secondary.main),
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        "& .time": {
+          justifyContent: "flex-start",
+          fontSize: "10px",
         },
       },
     },
     "&.contact + .me, &.me + .contact": {
-      paddingTop: 20,
-      marginTop: 20,
-    },
-    "&.first-of-group": {
-      "& .bubble": {
-        borderTopLeftRadius: 20,
-        paddingTop: 13,
-      },
+      paddingTop: 10,
+      marginTop: 10,
     },
     "&.last-of-group": {
       "& .bubble": {
-        borderBottomLeftRadius: 20,
-        paddingBottom: 13,
         "& .time": {
           display: "flex",
         },
@@ -97,14 +69,24 @@ const useStyles = makeStyles((theme) => ({
 function ChatMessage(props) {
   const { room } = props;
   const chatRef = useRef(null);
+  const inputRef = useRef(null);
   const [message, setMessage] = useState("");
   const chat = useSelector(({ chat }) => chat);
   const auth = useSelector(({ auth }) => auth);
   const classes = useStyles(props);
 
   const sendMessage = () => {
-    chatService.sendMessage(message, auth.user.userId, room.roomId);
-    setMessage("");
+    if (message && message.length > 0) {
+      chatService.sendMessage(message, auth.user.userId, room.roomId);
+      setMessage("");
+      inputRef.current.focus();
+    }
+  };
+
+  const handleEnter = (e) => {
+    if (e.keyCode === 13) {
+      sendMessage();
+    }
   };
 
   const getChats = () => {
@@ -121,18 +103,31 @@ function ChatMessage(props) {
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }
 
+  function isFirstMessageOfGroup(item, i) {
+    return (
+      i === 0 || (getChats()[i - 1] && getChats()[i - 1].sender !== item.sender)
+    );
+  }
+
+  function isLastMessageOfGroup(item, i) {
+    return (
+      i === getChats().length - 1 ||
+      (getChats()[i + 1] && getChats()[i + 1].sender !== item.sender)
+    );
+  }
+
   useEffect(() => {
     scrollToBottom();
   }, [chat.chat.chats]);
 
   return (
-    <div className="max-w-full min-w-full">
+    <div className="max-w-full min-w-full border-1 border-blue-500">
       <div
         id="scrollbar"
         className="flex flex-1 flex-col overflow-y-auto h-full"
         ref={chatRef}
       >
-        <div className="flex flex-col mb-92">
+        <div className="flex flex-col mb-92 pt-1">
           {getChats().map((c, index) => {
             const selfMessage = auth.user.userId === c.sender;
             return (
@@ -140,72 +135,68 @@ function ChatMessage(props) {
                 key={index}
                 className={clsx(
                   classes.messageRow,
-                  "flex flex-grow-0 flex-shrink-0 items-start justify-end relative px-8 md:px-16 pb-4",
+                  "flex flex-grow-0 flex-shrink-0 items-start relative pb-4 px-8",
                   { me: selfMessage },
                   { contact: !selfMessage },
-                  index + 1 === getChats().length && "pb-96"
+                  { "first-of-group": isFirstMessageOfGroup(c, index) },
+                  { "last-of-group": isLastMessageOfGroup(c, index) },
+                  index + 1 === getChats().length && "pb-32"
                 )}
               >
-                <Avatar className="avatar ltr:left-0 rtl:right-0 m-0 -mx-32">
-                  H
-                </Avatar>
-                <div className="bubble flex relative items-center justify-center p-12 max-w-full shadow-1">
+                <Avatar className="avatar m-0">H</Avatar>
+                <div className="bubble flex flex-col relative items-center justify-center p-1rem max-w-full shadow-1">
                   <div className="leading-tight whitespace-pre-wrap">
                     {c.content}
                   </div>
-                  <Typography
-                    className="time hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
+                  <span
+                    className="time absolute text-gray-700 hidden w-full text-11 mt-8 -mb-12 bottom-0 whitespace-no-wrap"
                     color="textSecondary"
                   >
                     {moment(c.timeStamp).format("MMMM Do YYYY, h:mm:ss a")}
-                  </Typography>
+                  </span>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-      <div className="w-full md:relative">
-        <div className="absolute mx-2 mb-8 bottom-0 left-0 right-0">
-          <Paper
-            className="flex items-center relative rounded-24"
-            elevation={1}
+      <div className="absolute w-full md:w-2/3 mb-8 bottom-0 right-0 px-8">
+        <Paper className="flex items-center relative rounded-24" elevation={1}>
+          <IconButton
+            className="absolute right-0 top-0"
+            size="medium"
+            onClick={() => {}}
           >
-            <IconButton
-              className="absolute right-0 top-0"
-              size="medium"
-              onClick={() => {}}
-            >
-              <PostAdd />
-            </IconButton>
-            <TextField
-              autoFocus={false}
-              id="message-input"
-              className="flex-1"
-              InputProps={{
-                disableUnderline: true,
-                classes: {
-                  root:
-                    "flex flex-grow flex-shrink-0 mx-4 ltr:mr-48 rtl:ml-48 my-8",
-                  input: "",
-                },
-                placeholder: "Type your message",
-              }}
-              InputLabelProps={{
-                shrink: false,
-              }}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <IconButton
-              className="absolute right-0 top-0"
-              size="medium"
-              onClick={() => sendMessage()}
-            >
-              <Send />
-            </IconButton>
-          </Paper>
-        </div>
+            <PostAdd />
+          </IconButton>
+          <TextField
+            autoFocus={false}
+            ref={inputRef}
+            id="message-input"
+            className="flex-1"
+            onKeyUp={(e) => handleEnter(e)}
+            InputProps={{
+              disableUnderline: true,
+              classes: {
+                root: "flex flex-grow flex-shrink-0 mx-4 my-8",
+                input: "",
+              },
+              placeholder: "Type your message",
+            }}
+            InputLabelProps={{
+              shrink: false,
+            }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <IconButton
+            className="absolute right-0 top-0"
+            size="medium"
+            onClick={() => sendMessage()}
+          >
+            <Send />
+          </IconButton>
+        </Paper>
       </div>
     </div>
   );

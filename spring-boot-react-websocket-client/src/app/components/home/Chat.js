@@ -10,6 +10,7 @@ import * as Actions from "app/store/actions";
 import AddPerson from "./AddPerson";
 import UserAvatar from "./UserAvatar";
 import ChatRoom from "./ChatRoom";
+import ChatContact from "./ChatContact";
 
 function Home(props) {
   const dispatch = useDispatch();
@@ -33,10 +34,6 @@ function Home(props) {
 
   const addGroup = () => {
     handleClose();
-  };
-
-  const setCurrentRoom = (roomId) => {
-    dispatch(Actions.setCurrentChatRoom(roomId));
   };
 
   useEffect(() => {
@@ -63,7 +60,7 @@ function Home(props) {
   }, [dispatch, chat.chat.connected, chat.chat.rooms]);
 
   return (
-    <div className="flex h-full overflow-auto justify-center md:mx-3">
+    <div className="flex h-full overflow-auto justify-center">
       <div
         className={clsx(
           "w-full md:w-1/3 pr-1",
@@ -115,25 +112,7 @@ function Home(props) {
             <div className="py-20 text-center">No Room or Contact Found</div>
           ) : (
             chat.chat.rooms.map((room, index) => (
-              <div
-                key={index}
-                className="flex flex-grow justify-between bg-gray-200 h-32 pl-5 pr-3 border-green-700 shadow-1 cursor-pointer"
-                onClick={() => setCurrentRoom(room.roomId)}
-              >
-                <div className="flex justify-center">
-                  <div className="flex flex-col justify-center mr-3">
-                    <UserAvatar
-                      name={room.roomName}
-                      image={undefined}
-                      group={room.group}
-                      targetUserId={room.targetUserId}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    {room.roomName}
-                  </div>
-                </div>
-              </div>
+              <ChatContact room={room} key={index} />
             ))
           )}
         </div>
