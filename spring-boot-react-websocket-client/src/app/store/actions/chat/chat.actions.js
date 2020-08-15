@@ -7,6 +7,7 @@ export const ADD_CHAT_ROOMS = "[CHAT] ADD CHAT ROOM";
 export const CHANGE_CURRENT_CHAT_ROOM = "[CHAT] CHANGE_CURRENT_CHAT_ROOM";
 export const USER_ONLINE = "[CHAT] USER_ONLINE";
 export const STORE_CHAT = "[CHAT] STORE CHAT";
+export const LAST_SEEN_MESSAGE = "[CHAT] LAST_SEEN_MESSAGE";
 
 export function setConnectionStatus(value) {
   return {

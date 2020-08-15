@@ -54,7 +54,7 @@ const StyledBadge = withStyles((theme) => ({
 
 function ChatRoom(props) {
   const classes = useStyles(props);
-  const { roomId } = props;
+  const { roomId, totalUnseen } = props;
   const dispatch = useDispatch();
   const [room, setRoom] = useState(null);
   const chat = useSelector(({ chat }) => chat);
@@ -90,13 +90,19 @@ function ChatRoom(props) {
         >
           <AppBar className="w-full" position="static" elevation={1}>
             <Toolbar className={classes.toolBar}>
-              <div className="md:hidden flex flex-col justify-center">
-                <IconButton size="medium" onClick={() => backHandler()}>
-                  <StyledBadge badgeContent="10+" color="secondary">
-                    <ArrowBack />
-                  </StyledBadge>
-                </IconButton>
-              </div>
+              {totalUnseen > 0 && (
+                <div className="md:hidden flex flex-col justify-center">
+                  <IconButton size="medium" onClick={() => backHandler()}>
+                    <StyledBadge
+                      badgeContent={totalUnseen > 10 ? "10+" : totalUnseen}
+                      color="secondary"
+                    >
+                      <ArrowBack />
+                    </StyledBadge>
+                  </IconButton>
+                </div>
+              )}
+
               <div className="w-full flex justify-between">
                 <div className="flex items-center">
                   <div className="relative">

@@ -36,6 +36,34 @@ function Home(props) {
     handleClose();
   };
 
+  const getUneenCount = (roomId) => {
+    const selectedMessageId = chat.chat.lastSeen[roomId];
+    if (!selectedMessageId) {
+      return chat.chat.chats.filter((c) => c.chatGroup === roomId).length;
+    }
+    const message = chat.chat.chats.filter(
+      (c) => c.messageId === selectedMessageId
+    );
+    if (message.length > 0) {
+      return chat.chat.chats
+        .filter((c) => c.chatGroup === roomId)
+        .filter((c) => c.timeStamp.getTime() > message[0].timeStamp.getTime())
+        .length;
+    } else {
+      return 0;
+    }
+  };
+
+  const getAllUnseenCount = () => {
+    let count = 0;
+    for (let i = 0; i < chat.chat.rooms; i++) {
+      let roomInfo = chat.chat.rooms[i];
+      count = count + getUneenCount(roomInfo.roomId);
+    }
+
+    return count;
+  };
+
   useEffect(() => {
     chatService
       .loadChatRooms()
@@ -112,7 +140,11 @@ function Home(props) {
             <div className="py-20 text-center">No Room or Contact Found</div>
           ) : (
             chat.chat.rooms.map((room, index) => (
-              <ChatContact room={room} key={index} />
+              <ChatContact
+                unseenCount={getUneenCount(room.roomId)}
+                room={room}
+                key={index}
+              />
             ))
           )}
         </div>
@@ -123,7 +155,10 @@ function Home(props) {
           chat.chat.currenctRoom === null ? "hidden md:block" : "block"
         )}
       >
-        <ChatRoom roomId={chat.chat.currenctRoom} />
+        <ChatRoom
+          totalUnseen={getAllUnseenCount()}
+          roomId={chat.chat.currenctRoom}
+        />
       </div>
       <AddPerson
         open={openAddUserDialog}

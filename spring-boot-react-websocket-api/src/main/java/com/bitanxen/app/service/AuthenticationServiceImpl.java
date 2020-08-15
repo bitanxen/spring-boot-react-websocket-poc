@@ -121,13 +121,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return users.stream()
                 .filter(u -> !u.getUserId().equals(userId))
                 .map(u -> {
-                    List<ChatRoom> existingRoom = chatRoomRepository.getExistingRooms(Arrays.asList(u, user));
+                    List<ChatRoom> existingRoom = chatRoomRepository.findAll()
+                            .stream()
+                            .filter(chatRoom -> chatRoom.getUsers().size() == 2)
+                            .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(user.getUserId())))
+                            .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(u.getUserId())))
+                            .collect(Collectors.toList());
 
                     return SearchUserDTO.builder()
                             .userId(u.getUserId())
                             .emailId(u.getEmailId())
                             .fullName(u.getFullName())
-                            .chatRoom(existingRoom != null && !existingRoom.isEmpty() ? existingRoom.get(0).getChatRoomId() : null)
+                            .chatRoom(!existingRoom.isEmpty() ? existingRoom.get(0).getChatRoomId() : null)
                             .build();
                 })
                 .collect(Collectors.toList());
