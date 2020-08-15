@@ -110,3 +110,13 @@ function storeChat(data) {
     payload: data,
   };
 }
+
+function updateLastMessage(roomId, messageId) {
+  return {
+    type: LAST_SEEN_MESSAGE,
+    payload: {
+      roomId,
+      messageId,
+    },
+  };
+}

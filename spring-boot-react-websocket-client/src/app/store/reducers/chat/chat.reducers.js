@@ -63,15 +63,12 @@ const chat = function (state = initialState, action) {
       };
     }
     case Actions.LAST_SEEN_MESSAGE: {
-      const lastSeenMessages = state.lastSeen.map((lsm) => {
-        if (lsm.roomId === action.payload.roomId) {
-          lsm.lastMessage = action.payload.messageId;
-        }
-        return lsm;
-      });
       return {
         ...state,
-        lastSeen: lastSeenMessages,
+        lastSeen: {
+          ...state.lastSeen,
+          [action.payload.roomId]: action.payload.messageId,
+        },
       };
     }
     default:

@@ -121,12 +121,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return users.stream()
                 .filter(u -> !u.getUserId().equals(userId))
                 .map(u -> {
-                    List<ChatRoom> existingRoom = chatRoomRepository.findAll()
-                            .stream()
-                            .filter(chatRoom -> chatRoom.getUsers().size() == 2)
-                            .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(user.getUserId())))
-                            .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(u.getUserId())))
-                            .collect(Collectors.toList());
+                    List<ChatRoom> existingRoom = getMatchingRoom(u.getUserId(), userId);
 
                     return SearchUserDTO.builder()
                             .userId(u.getUserId())
@@ -135,6 +130,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                             .chatRoom(!existingRoom.isEmpty() ? existingRoom.get(0).getChatRoomId() : null)
                             .build();
                 })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ChatRoom> getMatchingRoom(String userId, String anotherUserId) {
+        return chatRoomRepository.findAll()
+                .stream()
+                .filter(chatRoom -> chatRoom.getUsers().size() == 2)
+                .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(userId)))
+                .filter(chatRoom -> chatRoom.getUsers().stream().anyMatch(cu -> cu.getUser().getUserId().equals(anotherUserId)))
                 .collect(Collectors.toList());
     }
 }

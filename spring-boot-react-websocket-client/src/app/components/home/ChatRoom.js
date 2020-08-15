@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   makeStyles,
@@ -77,6 +77,26 @@ function ChatRoom(props) {
     dispatch(Actions.setCurrentChatRoom(null));
   };
 
+  const getChats = useCallback(
+    (roomId) => {
+      return chat.chat.chats
+        .filter((c) => c.chatGroup === roomId)
+        .sort(function (a, b) {
+          var c = new Date(a.timeStamp);
+          var d = new Date(b.timeStamp);
+          return c - d;
+        });
+    },
+    [chat.chat.chats]
+  );
+
+  useEffect(() => {
+    const roomChats = getChats(roomId);
+    if (roomChats.length > 0) {
+      dispatch(Actions.updateLastMessage(roomId, roomChats[0].messageId));
+    }
+  }, [dispatch, roomId, getChats]);
+
   return (
     <div className="w-full h-full overflow-hidden">
       {room === null ? (
@@ -90,18 +110,20 @@ function ChatRoom(props) {
         >
           <AppBar className="w-full" position="static" elevation={1}>
             <Toolbar className={classes.toolBar}>
-              {totalUnseen > 0 && (
-                <div className="md:hidden flex flex-col justify-center">
-                  <IconButton size="medium" onClick={() => backHandler()}>
+              <div className="md:hidden flex flex-col justify-center">
+                <IconButton size="medium" onClick={() => backHandler()}>
+                  {totalUnseen > 0 ? (
                     <StyledBadge
                       badgeContent={totalUnseen > 10 ? "10+" : totalUnseen}
                       color="secondary"
                     >
                       <ArrowBack />
                     </StyledBadge>
-                  </IconButton>
-                </div>
-              )}
+                  ) : (
+                    <ArrowBack />
+                  )}
+                </IconButton>
+              </div>
 
               <div className="w-full flex justify-between">
                 <div className="flex items-center">

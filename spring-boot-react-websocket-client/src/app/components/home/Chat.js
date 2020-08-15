@@ -56,11 +56,12 @@ function Home(props) {
 
   const getAllUnseenCount = () => {
     let count = 0;
-    for (let i = 0; i < chat.chat.rooms; i++) {
-      let roomInfo = chat.chat.rooms[i];
-      count = count + getUneenCount(roomInfo.roomId);
+    if (chat.chat.rooms !== null) {
+      for (let i = 0; i < chat.chat.rooms.length; i++) {
+        let roomInfo = chat.chat.rooms[i];
+        count = count + getUneenCount(roomInfo.roomId);
+      }
     }
-
     return count;
   };
 
