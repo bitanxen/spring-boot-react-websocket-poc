@@ -6,7 +6,9 @@ import {
   AppBar,
   Toolbar,
   Typography,
+  Badge,
 } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import { MoreVert, Call, ArrowBack } from "@material-ui/icons";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import clsx from "clsx";
@@ -36,9 +38,19 @@ const useStyles = makeStyles((theme) => ({
   },
   toolBar: {
     padding: 0,
-    backgroundColor: "#5ab0c7",
+    backgroundColor: theme.palette.primary.light,
   },
 }));
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    fontSize: "8px",
+    right: "-6px",
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: "0 4px",
+    backgroundColor: theme.palette.warning.light,
+  },
+}))(Badge);
 
 function ChatRoom(props) {
   const classes = useStyles(props);
@@ -80,7 +92,9 @@ function ChatRoom(props) {
             <Toolbar className={classes.toolBar}>
               <div className="md:hidden flex flex-col justify-center">
                 <IconButton size="medium" onClick={() => backHandler()}>
-                  <ArrowBack />
+                  <StyledBadge badgeContent="10+" color="secondary">
+                    <ArrowBack />
+                  </StyledBadge>
                 </IconButton>
               </div>
               <div className="w-full flex justify-between">
