@@ -19,6 +19,7 @@ module.exports = {
         auto: "auto",
         px: "1px",
         "0": "0",
+        "1rem": "1rem",
         "4": "0.4rem",
         "6": "0.6rem",
         "8": "0.8rem",
@@ -192,6 +193,8 @@ module.exports = {
         "3xl": "3rem", // 30px
         "4xl": "3.6rem", // 36px
         "5xl": "4.8rem", // 48px,
+        "6": "0.6rem",
+        "8": "0.8rem",
         "10": "1rem",
         "11": "1.1rem",
         "12": "1.2rem",
