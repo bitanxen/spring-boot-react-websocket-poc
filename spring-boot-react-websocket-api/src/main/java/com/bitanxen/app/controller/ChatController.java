@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 @RestController
 public class ChatController {
@@ -33,7 +34,7 @@ public class ChatController {
 
     @MessageMapping("/chat/{group}")
     public void sendMessage(@DestinationVariable String group, @Payload ChatMessage chatMessage) {
-        System.out.println("sendMessage: "+ group + " " + chatMessage);
+        chatMessage.setMessageId(UUID.randomUUID().toString());
         simpMessagingTemplate.convertAndSend("/topic/message/"+group, chatMessage);
     }
 

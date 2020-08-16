@@ -1,5 +1,7 @@
 package com.bitanxen.app.util;
 
+import org.springframework.web.socket.WebSocketSession;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +26,10 @@ public class ChatUserDB {
         return users.values();
     }
 
+    public ChatUser getUser(String id) {
+        return users.get(id);
+    }
+
     public void setUser(String userName, boolean isOnline) {
         if(users.containsKey(userName)) {
             ChatUser chatUser = users.get(userName);
@@ -31,6 +37,14 @@ public class ChatUserDB {
             chatUser.setOnline(isOnline);
         } else {
             users.put(userName, new ChatUser(userName));
+        }
+    }
+
+    public void setUserRTC(String userName, WebSocketSession session, String sessionId) {
+        if(users.containsKey(userName)) {
+            ChatUser chatUser = users.get(userName);
+            chatUser.setSession(session);
+            chatUser.setSessionId(sessionId);
         }
     }
 }

@@ -9,5 +9,6 @@ public enum MessageType {
     GROUP_DELETED,
     USER_ADDED,
     USER_BLOCKED,
-    USER_REMOVED
+    USER_REMOVED,
+    WEB_RTC
 }

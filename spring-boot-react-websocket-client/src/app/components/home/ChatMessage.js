@@ -116,6 +116,13 @@ function ChatMessage(props) {
     );
   }
 
+  function getChatSender(chat) {
+    const member = room.roomMembers.filter(
+      (rm) => rm.userId === chat.sender
+    )[0];
+    return <Avatar className="avatar m-0">{member.userFullName[0]}</Avatar>;
+  }
+
   useEffect(() => {
     scrollToBottom();
   }, [chat.chat.chats]);
@@ -143,8 +150,8 @@ function ChatMessage(props) {
                   index + 1 === getChats().length && "pb-32"
                 )}
               >
-                <Avatar className="avatar m-0">H</Avatar>
-                <div className="bubble flex flex-col relative items-center justify-center p-1rem max-w-full shadow-1">
+                {getChatSender(c)}
+                <div className="bubble flex flex-col relative items-center justify-center p-8 max-w-full shadow-1">
                   <div className="leading-tight whitespace-pre-wrap">
                     {c.content}
                   </div>
