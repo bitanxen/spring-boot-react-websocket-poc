@@ -43,7 +43,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 throw new ChatRoomException("Cannot add self as member of Chat Room");
             }
 
-            List<ChatRoom> existingRoom = chatRoomRepository.getExistingRooms(Arrays.asList(createdBy, otherUser));
+            List<ChatRoom> existingRoom = authenticationService.getMatchingRoom(user.getUserId(), otherUser.getUserId());
             if(!existingRoom.isEmpty()) {
                 throw new ChatRoomException("Room Exist Between You and "+otherUser.getFullName());
             }

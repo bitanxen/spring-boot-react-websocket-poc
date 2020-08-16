@@ -6,6 +6,7 @@ import com.bitanxen.app.dto.user.UserDTO;
 import com.bitanxen.app.dto.auth.LoginRequestDTO;
 import com.bitanxen.app.dto.auth.TokenDTO;
 import com.bitanxen.app.dto.user.SearchUserDTO;
+import com.bitanxen.app.model.chat.ChatRoom;
 import com.bitanxen.app.model.user.User;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface AuthenticationService {
     Optional<SessionUser> isAuthenticated(String s);
     SessionUser validateToken(String token);
     List<SearchUserDTO> getSearchUser(String searchTerm, String userId);
+    public List<ChatRoom> getMatchingRoom(String userId, String anotherUserId);
 }

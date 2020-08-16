@@ -28,7 +28,7 @@ function ChatContact(props) {
   const chat = useSelector(({ chat }) => chat);
   const auth = useSelector(({ auth }) => auth);
 
-  const { room } = props;
+  const { room, unseenCount } = props;
 
   const setCurrentRoom = (roomId) => {
     dispatch(Actions.setCurrentChatRoom(roomId));
@@ -83,12 +83,10 @@ function ChatContact(props) {
         }}
         disableTypography={true}
         primary={
-          <div className="text-10 md:text-12 text-gray-700 w-full">
-            {room.roomName}
-          </div>
+          <div className="text-10 text-gray-700 w-full">{room.roomName}</div>
         }
         secondary={
-          <div className="text-9 md:text-10 text-gray-500 max-w-full truncate">
+          <div className="text-9 text-gray-500 max-w-full truncate">
             {getLastMessageContent()}
           </div>
         }
@@ -99,14 +97,14 @@ function ChatContact(props) {
           <span className="whitespace-no-wrap mb-4 text-8">
             {moment(getLastMessage().timeStamp).format("ll")}
           </span>
-          {true && (
+          {unseenCount > 0 && (
             <div
               className={clsx(
                 classes.unreadBadge,
                 "flex items-center justify-center min-w-12 h-12 rounded-full text-6 text-center"
               )}
             >
-              5
+              {unseenCount}
             </div>
           )}
         </div>

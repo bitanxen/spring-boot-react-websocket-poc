@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   makeStyles,
@@ -54,7 +54,7 @@ const StyledBadge = withStyles((theme) => ({
 
 function ChatRoom(props) {
   const classes = useStyles(props);
-  const { roomId } = props;
+  const { roomId, totalUnseen } = props;
   const dispatch = useDispatch();
   const [room, setRoom] = useState(null);
   const chat = useSelector(({ chat }) => chat);
@@ -77,6 +77,31 @@ function ChatRoom(props) {
     dispatch(Actions.setCurrentChatRoom(null));
   };
 
+  const getChats = useCallback(
+    (roomId) => {
+      return chat.chat.chats
+        .filter((c) => c.chatGroup === roomId)
+        .sort(function (a, b) {
+          var c = new Date(a.timeStamp);
+          var d = new Date(b.timeStamp);
+          return c - d;
+        });
+    },
+    [chat.chat.chats]
+  );
+
+  useEffect(() => {
+    const roomChats = getChats(roomId);
+    if (roomChats.length > 0) {
+      dispatch(
+        Actions.updateLastMessage(
+          roomId,
+          roomChats[roomChats.length - 1].messageId
+        )
+      );
+    }
+  }, [dispatch, roomId, getChats]);
+
   return (
     <div className="w-full h-full overflow-hidden">
       {room === null ? (
@@ -92,11 +117,19 @@ function ChatRoom(props) {
             <Toolbar className={classes.toolBar}>
               <div className="md:hidden flex flex-col justify-center">
                 <IconButton size="medium" onClick={() => backHandler()}>
-                  <StyledBadge badgeContent="10+" color="secondary">
+                  {totalUnseen > 0 ? (
+                    <StyledBadge
+                      badgeContent={totalUnseen > 10 ? "10+" : totalUnseen}
+                      color="secondary"
+                    >
+                      <ArrowBack />
+                    </StyledBadge>
+                  ) : (
                     <ArrowBack />
-                  </StyledBadge>
+                  )}
                 </IconButton>
               </div>
+
               <div className="w-full flex justify-between">
                 <div className="flex items-center">
                   <div className="relative">

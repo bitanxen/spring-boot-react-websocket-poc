@@ -7,6 +7,7 @@ const initialState = {
   currenctRoom: null,
   onlineUsers: [],
   chats: [],
+  lastSeen: {},
 };
 
 const chat = function (state = initialState, action) {
@@ -52,6 +53,22 @@ const chat = function (state = initialState, action) {
       return {
         ...state,
         chats: [...state.chats, action.payload],
+        lastSeen: {
+          ...state.lastSeen,
+          [action.payload.chatGroup]:
+            state.currenctRoom === action.payload.chatGroup
+              ? action.payload.messageId
+              : state.lastSeen[action.payload.chatGroup],
+        },
+      };
+    }
+    case Actions.LAST_SEEN_MESSAGE: {
+      return {
+        ...state,
+        lastSeen: {
+          ...state.lastSeen,
+          [action.payload.roomId]: action.payload.messageId,
+        },
       };
     }
     default:
