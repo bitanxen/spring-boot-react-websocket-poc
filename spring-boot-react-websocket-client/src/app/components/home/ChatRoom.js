@@ -93,7 +93,12 @@ function ChatRoom(props) {
   useEffect(() => {
     const roomChats = getChats(roomId);
     if (roomChats.length > 0) {
-      dispatch(Actions.updateLastMessage(roomId, roomChats[0].messageId));
+      dispatch(
+        Actions.updateLastMessage(
+          roomId,
+          roomChats[roomChats.length - 1].messageId
+        )
+      );
     }
   }, [dispatch, roomId, getChats]);
 

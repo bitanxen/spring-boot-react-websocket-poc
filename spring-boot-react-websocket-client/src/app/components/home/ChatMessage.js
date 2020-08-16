@@ -151,7 +151,7 @@ function ChatMessage(props) {
                 )}
               >
                 {getChatSender(c)}
-                <div className="bubble flex flex-col relative items-center justify-center p-1rem max-w-full shadow-1">
+                <div className="bubble flex flex-col relative items-center justify-center p-8 max-w-full shadow-1">
                   <div className="leading-tight whitespace-pre-wrap">
                     {c.content}
                   </div>
