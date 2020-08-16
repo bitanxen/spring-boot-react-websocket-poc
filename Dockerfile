@@ -13,7 +13,7 @@ COPY spring-boot-react-websocket-client/yarn.lock spring-boot-react-websocket-cl
 
 COPY pom.xml .
 
-RUN mvn clean install -DskipTests
+RUN mvn clean install -DskipTests -e
 
 FROM openjdk:8-jdk-alpine as RUN
 WORKDIR /opt/app
